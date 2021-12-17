@@ -1,6 +1,4 @@
 import string
-import llist
-from llist import sllist, sllistnode
 
 
 with open('input14.txt') as file:
@@ -9,25 +7,25 @@ with open('input14.txt') as file:
     template = lines[0].strip()
     tempset = set()
     chardist = []
-    sll = sllist()
     for char in template:
         tempset.add(char)
-        sll.append(char)
+
 
     for row in range(2, len(lines)):
         rules.append(lines[row].strip().split())
 
-    for _ in range(40):
+    for _ in range(10):
+
         insert = []
-        k = 0
-        for i in range(sll.size - 1):
+        for i in range(len(template) - 1):
             for j in range(len(rules)):
-                if sll[i] + sll[i + 1] == rules[j][0]:
-                    insert.append([i + k, rules[j][2]])
-                    k += 1
+                if template[i] + template[i + 1] == rules[j][0]:
+                    insert.append([i + 1, rules[j][2]])
 
         for i in range(len(insert)):
-            sll.insertafter(rules[j][2], sll.nodeat(insert[i][0]))
+            template = template[:insert[i][0]] + insert[i][1] + template[insert[i][0]:]
+            for j in range(i + 1, len(insert)):
+                insert[j][0] += 1
 
     for char in tempset:
         chardist.append(template.count(char))
