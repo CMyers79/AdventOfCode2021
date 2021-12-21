@@ -51,8 +51,8 @@ def packet(binary, i, stack, index, stopbits, packets, curtrigger, ops):
             index[-1] += 1
 
         if curtrigger[-1] == "packets":
-            packets[-1] -= 1
-            if packets[-1] == 0:
+            packets[-1] -= 1                                            # negative packets breaks mult packet closure
+            while packets[-1] == 0 and curtrigger[-1] == "packets":
                 packets.pop()
                 curtrigger.pop()
                 stack.append(op(stack[-index[-1]:], ops))
@@ -62,7 +62,7 @@ def packet(binary, i, stack, index, stopbits, packets, curtrigger, ops):
         if i > len(binary) - 5:
             return stack
 
-    else:  # if subpacket, read length type
+    else:  # if operator packet, read length type
         index.append(0)
         lid = binary[i]
         i += 1
