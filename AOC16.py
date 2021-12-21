@@ -49,9 +49,15 @@ def packet(binary, i, stack, index, stopbits, packets, curtrigger, ops):
             stack.append(op(stack[-index[-1]:], ops))
             stack = stack[:-index.pop() - 1] + [stack[-1]]
             index[-1] += 1
+            while packets[-1] == 0 and curtrigger[-1] == "packets":
+                packets.pop()
+                curtrigger.pop()
+                stack.append(op(stack[-index[-1]:], ops))
+                stack = stack[:-index.pop() - 1] + [stack[-1]]
+                index[-1] += 1                                          # index runs out of elements
 
         if curtrigger[-1] == "packets":
-            packets[-1] -= 1                                            # negative packets breaks mult packet closure
+            packets[-1] -= 1
             while packets[-1] == 0 and curtrigger[-1] == "packets":
                 packets.pop()
                 curtrigger.pop()
